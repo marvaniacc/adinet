@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@import 'vazirmatn/Vazirmatn-font-face.css';
+@import 'material-symbols/outlined.css';
+
+@theme {
+    --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
+
+    /* Adinet brand palette - calm, professional, trustworthy */
+    --color-brand-50: #eef4ff;
+    --color-brand-100: #dae5ff;
+    --color-brand-200: #bdd0ff;
+    --color-brand-300: #90b1ff;
+    --color-brand-400: #5c86fc;
+    --color-brand-500: #3760f4;
+    --color-brand-600: #2040e8;
+    --color-brand-700: #1a30d5;
+    --color-brand-800: #1c2cad;
+    --color-brand-900: #1c2b89;
+    --color-brand-950: #161d54;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+}
+
+.btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-50;
+}
+
+.btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-50;
+}
+
+.input {
+    @apply block w-full rounded-xl border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500;
+}
