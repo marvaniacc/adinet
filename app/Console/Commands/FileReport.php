@@ -15,7 +15,9 @@ class FileReport extends Command
         {--task= : Task description / summary body}
         {--files= : Comma-separated list of changed files}
         {--tests= : Test result summary}
-        {--github=not-pushed : pushed | not-pushed}';
+        {--github=not-pushed : pushed | not-pushed}
+        {--branch= : Override git branch (for deployments without .git)}
+        {--commit= : Override git commit hash}';
 
     protected $description = 'File a private admin report (.txt) documenting a completed development task';
 
@@ -37,7 +39,10 @@ class FileReport extends Command
             return self::FAILURE;
         }
 
-        [$branch, $commit, $dirty] = $this->gitMetadata();
+        [$branch, $commit, $dirty] = $this->gitMetadata(
+            (string) $this->option('branch'),
+            (string) $this->option('commit'),
+        );
 
         // Latin titles become slugs; non-latin (Persian) titles fall back
         // to a timestamp name - either way the stored file always ends in .txt.
@@ -62,7 +67,7 @@ class FileReport extends Command
         return self::SUCCESS;
     }
 
-    private function composeContent(ReportType $type, string $title, string $branch, string $commit, bool $dirty): string
+    private function composeContent(ReportType $type, string $title, string $branch, string $commit, ?bool $dirty): string
     {
         return implode("\n", [
             'Task: '.($this->opt('task') ?? '(see title)'),
@@ -73,7 +78,7 @@ class FileReport extends Command
             'Files changed: '.($this->opt('files') ?? '-'),
             'Tests: '.($this->opt('tests') ?? 'not recorded'),
             'GitHub: '.(string) $this->option('github'),
-            'Working tree: '.($dirty ? 'dirty' : 'clean'),
+            'Working tree: '.($dirty === null ? 'unknown' : ($dirty ? 'dirty' : 'clean')),
             '',
             'Type: '.$type->label(),
             'Title: '.$title,
@@ -85,15 +90,30 @@ class FileReport extends Command
         return $this->trimOrNull((string) $this->option($key));
     }
 
-    /** @return array{0: string, 1: string, 2: bool} branch, commit hash, dirty flag */
-    private function gitMetadata(): array
+    /**
+     * @return array{0: string, 1: string, 2: ?bool} branch, commit hash,
+     *                                               dirty flag (null = undeterminable)
+     */
+    private function gitMetadata(string $branchOverride, string $commitOverride): array
     {
+        // Explicit overrides always win (deployed copies without .git,
+        // or callers reporting from a different checkout).
+        if ($branchOverride !== '' && $commitOverride !== '') {
+            return [$branchOverride, $commitOverride, null];
+        }
+
+        $gitAvailable = is_dir(base_path().'/.git');
+
+        if (! $gitAvailable) {
+            return ['unknown', 'unknown', null];
+        }
+
         $run = fn (string $cmd) => trim((string) shell_exec('cd '.escapeshellarg(base_path())." && {$cmd} 2>/dev/null"));
 
         return [
             $run('git rev-parse --abbrev-ref HEAD') ?: 'unknown',
             $run('git rev-parse --short HEAD') ?: 'unknown',
-            $run('git status --porcelain') !== '',
+            $run('git status --porcelain') !== '' ? true : false,
         ];
     }
 

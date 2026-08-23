@@ -65,3 +65,18 @@ it('rejects invalid types', function () {
 
     expect(Report::count())->toBe(0);
 });
+
+it('accepts branch and commit overrides for deployments without .git', function () {
+    $this->artisan('adinet:file-report', [
+        '--title' => 'Deployed copy report',
+        '--type' => 'deployment',
+        '--branch' => 'main',
+        '--commit' => 'd38626a',
+    ])->assertSuccessful();
+
+    $content = Storage::disk('local')->get(Report::query()->sole()->file_path);
+
+    expect($content)->toContain('Branch: main')
+        ->and($content)->toContain('Commit: d38626a')
+        ->and($content)->toContain('Working tree: unknown');
+});
