@@ -5,7 +5,7 @@
             <p class="mt-2 text-sm text-gray-500">وکلای تأییدشده بر اساس تخصص و شهر خود را بیابید.</p>
         </div>
         <span class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-200">
-            <span class="material-symbols-outlined text-sm">verified</span>
+            <span class="material-symbols-rounded text-sm">verified</span>
             همه وکلا تأییدشده هستند
         </span>
     </div>
@@ -54,7 +54,7 @@
                         <img src="{{ Storage::url($lawyer->profile_photo) }}" class="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-brand-100" alt="">
                     @else
                         <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 ring-2 ring-brand-100">
-                            <span class="material-symbols-outlined">person</span>
+                            <span class="material-symbols-rounded">person</span>
                         </span>
                     @endif
                     <div class="min-w-0">
@@ -78,7 +78,7 @@
             </a>
         @empty
             <div class="col-span-full rounded-2xl border border-dashed border-gray-300 bg-white p-16 text-center">
-                <span class="material-symbols-outlined mx-auto block text-5xl text-gray-300">person_search</span>
+                <span class="material-symbols-rounded mx-auto block text-5xl text-gray-300">person_search</span>
                 <p class="mt-4 font-semibold text-gray-900">وکیلی با این مشخصات یافت نشد</p>
                 <p class="mt-1 text-sm text-gray-500">فیلترها را تغییر دهید یا بعداً دوباره مراجعه کنید.</p>
                 <button type="button" wire:click="$set('city', '');$set('specialty', '');$set('type', '')" class="btn-secondary mt-5">حذف فیلترها</button>

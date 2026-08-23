@@ -25,7 +25,7 @@
 
                         <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
                             <span class="inline-flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm text-brand-600">event</span>
+                                <span class="material-symbols-rounded text-sm text-brand-600">event</span>
                                 {{ \App\Support\PersianDate::format($appointment->scheduled_at, withTime: true) }}
                             </span>
                             <span>{{ \App\Support\PersianDate::digits($appointment->duration_minutes) }} دقیقه</span>
@@ -53,7 +53,7 @@
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">event_busy</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">event_busy</span>
                 <p class="mt-3 font-medium text-gray-900">نوبتی ثبت نشده است</p>
                 <p class="mt-1 text-sm text-gray-500">با پذیرش درخواست مشاوره، نوبت‌ها به‌صورت خودکار اینجا ساخته می‌شوند.</p>
             </div>

@@ -1,10 +1,6 @@
 <div>
-    <h1 class="text-2xl font-bold text-gray-900">ساعات کاری</h1>
-    <p class="mt-1 text-sm text-gray-500">بازه‌های تکرارشونده هفتگی خود را تعریف کنید تا موکلان بتوانند از میان زمان‌های خالی، نوبت رزرو کنند.</p>
-
-    @if (session('status'))
-        <div class="mt-4 rounded-xl bg-green-50 px-4 py-3 text-sm text-green-700">{{ session('status') }}</div>
-    @endif
+    <x-dashboard-header title="ساعات کاری" subtitle="بازه‌های تکرارشونده هفتگی خود را تعریف کنید تا موکلان بتوانند از میان زمان‌های خالی، نوبت رزرو کنند."></x-dashboard-header>
+    
 
     {{-- Add / edit form --}}
     <form wire:submit="save" class="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -58,11 +54,11 @@
                         <td class="px-5 py-3">
                             <div class="flex items-center justify-end gap-1">
                                 <button type="button" wire:click="edit({{ $slot->id }})" class="rounded-lg p-2 text-gray-400 hover:bg-brand-50 hover:text-brand-600">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                    <span class="material-symbols-rounded text-lg">edit</span>
                                 </button>
                                 <button type="button" wire:click="delete({{ $slot->id }})" wire:confirm="حذف شود؟"
                                         class="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                    <span class="material-symbols-rounded text-lg">delete</span>
                                 </button>
                             </div>
                         </td>

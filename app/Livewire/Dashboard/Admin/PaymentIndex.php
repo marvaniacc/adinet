@@ -13,6 +13,21 @@ class PaymentIndex extends Component
 {
     use WithPagination;
 
+    public function markRefunded(int $id): void
+    {
+        $payment = Payment::findOrFail($id);
+
+        abort_unless(auth()->user()->isAdmin(), 403);
+
+        if ($payment->status !== PaymentStatus::RefundRequested) {
+            return;
+        }
+
+        $payment->forceFill(['status' => PaymentStatus::Refunded])->save();
+
+        session()->flash('status', 'بازگشت وجه ثبت شد.');
+    }
+
     public function render()
     {
         return view('livewire.dashboard.admin.payment-index', [

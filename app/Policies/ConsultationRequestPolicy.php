@@ -2,7 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\AppointmentStatus;
 use App\Enums\ConsultationRequestStatus;
+use App\Enums\PaymentStatus;
 use App\Models\ConsultationRequest;
 use App\Models\User;
 
@@ -17,8 +19,24 @@ class ConsultationRequestPolicy
     /** Client cancels their own request while it still can be cancelled. */
     public function cancel(User $user, ConsultationRequest $request): bool
     {
-        return $user->id === $request->client_id
-            && in_array($request->status, [ConsultationRequestStatus::Pending, ConsultationRequestStatus::Accepted], true);
+        if ($user->id !== $request->client_id) {
+            return false;
+        }
+
+        if (! in_array($request->status, [ConsultationRequestStatus::Pending, ConsultationRequestStatus::Accepted], true)) {
+            return false;
+        }
+
+        // Paid appointments require admin/lawyer-mediated cancellation.
+        $appointment = $request->appointment;
+
+        if ($appointment !== null
+            && $appointment->status === AppointmentStatus::Scheduled
+            && $appointment->payment?->status === PaymentStatus::Paid) {
+            return false;
+        }
+
+        return true;
     }
 
     /** Lawyer accepts or rejects a pending request sent to them. */

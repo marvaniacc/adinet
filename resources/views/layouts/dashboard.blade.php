@@ -5,10 +5,10 @@
         $user->isAdmin() => [
             ['label' => 'داشبورد', 'icon' => 'dashboard', 'href' => route('admin.dashboard'), 'active' => true],
             ['label' => 'تأیید وکلا', 'icon' => 'verified', 'href' => route('admin.lawyers.verification')],
-            ['label' => 'وکلا', 'icon' => 'gavel', 'href' => '#'],
-            ['label' => 'موکلان', 'icon' => 'group', 'href' => '#'],
-            ['label' => 'درخواست‌ها', 'icon' => 'description', 'href' => '#'],
-            ['label' => 'نوبت‌ها', 'icon' => 'event', 'href' => '#'],
+            ['label' => 'وکلا', 'icon' => 'gavel', 'href' => route('admin.lawyers.index')],
+            ['label' => 'موکلان', 'icon' => 'group', 'href' => route('admin.clients.index')],
+            ['label' => 'درخواست‌ها', 'icon' => 'description', 'href' => route('admin.requests.index')],
+            ['label' => 'نوبت‌ها', 'icon' => 'event', 'href' => route('admin.appointments.index')],
             ['label' => 'نظرات', 'icon' => 'reviews', 'href' => route('admin.reviews')],
             ['label' => 'پرداخت‌ها', 'icon' => 'payments', 'href' => route('admin.payments')],
             ['label' => 'گزارشات', 'icon' => 'summarize', 'href' => route('admin.reports.index')],
@@ -30,7 +30,7 @@
             ['label' => 'درخواست‌های من', 'icon' => 'description', 'href' => route('dashboard.requests')],
             ['label' => 'نوبت‌های من', 'icon' => 'event', 'href' => route('dashboard.appointments')],
             ['label' => 'پیام‌ها', 'icon' => 'forum', 'href' => route('messages.index')],
-            ['label' => 'پروفایل', 'icon' => 'person', 'href' => '#'],
+            ['label' => 'پروفایل', 'icon' => 'person', 'href' => route('dashboard.profile')],
             ['label' => 'نظرات من', 'icon' => 'reviews', 'href' => route('reviews.index')],
         ],
     };
@@ -51,11 +51,11 @@
 
 <!-- Mobile top bar -->
 <div class="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-gray-200 bg-white px-4 md:hidden">
-    <button type="button" class="rounded-lg p-2 text-gray-600 hover:bg-gray-100" x-on:click="drawerOpen = true" aria-label="منو">
-        <span class="material-symbols-outlined">menu</span>
+    <button type="button" class="rounded-full p-2 text-gray-600 hover:bg-gray-100" x-on:click="drawerOpen = true" aria-label="منو">
+        <span class="material-symbols-rounded">menu</span>
     </button>
     <a href="{{ route('home') }}" class="flex items-center gap-1.5 font-extrabold text-brand-700">
-        <span class="material-symbols-outlined">balance</span>
+        <span class="material-symbols-rounded">balance</span>
         آدینت
     </a>
     <span class="w-9"></span>
@@ -64,58 +64,70 @@
 <!-- Mobile drawer backdrop -->
 <div class="fixed inset-0 z-40 bg-gray-900/50 md:hidden" x-show="drawerOpen" x-on:click="drawerOpen = false" x-transition.opacity x-cloak></div>
 
-<!-- Sidebar -->
+{{-- Desktop: icon rail that expands on hover (overlays content).
+    Mobile: off-canvas drawer at full label width. --}}
 <aside
-    class="fixed inset-y-0 right-0 z-50 w-72 translate-x-full overflow-y-auto border-l border-gray-200 bg-white transition-transform duration-200 md:translate-x-0"
+    class="group/sidebar fixed inset-y-0 right-0 z-50 overflow-y-auto overflow-x-hidden border-l border-gray-200 bg-white transition-all duration-200
+           w-64 translate-x-full md:translate-x-0 md:w-[76px] md:hover:w-64 md:hover:shadow-2xl"
     :class="drawerOpen && '!translate-x-0'"
     x-cloak
 >
-    <div class="flex h-16 items-center justify-between border-b border-gray-100 px-5">
-        <a href="{{ route('home') }}" class="flex items-center gap-2 font-extrabold text-brand-700">
-            <span class="material-symbols-outlined">balance</span>
-            آدینت
+    {{-- Brand --}}
+    <div class="flex h-16 items-center gap-2.5 overflow-hidden whitespace-nowrap border-b border-gray-100 px-5">
+        <a href="{{ route('home') }}" class="flex flex-none items-center gap-2 font-extrabold text-brand-700">
+            <span class="material-symbols-rounded text-2xl">balance</span>
+            <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">آدینت</span>
         </a>
-        <button type="button" class="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 md:hidden" x-on:click="drawerOpen = false" aria-label="بستن">
-            <span class="material-symbols-outlined">close</span>
+        <button type="button" class="flex-none rounded-full p-1.5 text-gray-500 hover:bg-gray-100 md:hidden" x-on:click="drawerOpen = false" aria-label="بستن">
+            <span class="material-symbols-rounded">close</span>
         </button>
     </div>
 
-    <div class="border-b border-gray-100 px-5 py-4">
-        <p class="text-sm font-semibold text-gray-900">{{ $user->fullName() }}</p>
-        <p dir="ltr" class="mt-0.5 text-right text-xs text-gray-400">{{ $user->mobile }}</p>
-        <span class="mt-2 inline-flex items-center rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700 ring-1 ring-inset ring-brand-200">
-            {{ match ($user->role) {
-                App\Models\User::ROLE_ADMIN => 'مدیر',
-                App\Models\User::ROLE_LAWYER => 'وکیل',
-                default => 'موکل',
-            } }}
-        </span>
+    {{-- User --}}
+    <div class="overflow-hidden whitespace-nowrap border-b border-gray-100 px-5 py-4">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-rounded flex-none text-2xl text-brand-600">account_circle</span>
+            <div class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">
+                <p class="text-sm font-semibold text-gray-900">{{ $user->fullName() }}</p>
+                <p dir="ltr" class="text-right text-xs text-gray-400">{{ $user->mobile }}</p>
+                <span class="badge mt-1 bg-brand-50 text-brand-700 ring-brand-200">
+                    {{ match ($user->role) {
+                        App\Models\User::ROLE_ADMIN => 'مدیر',
+                        App\Models\User::ROLE_LAWYER => 'وکیل',
+                        default => 'موکل',
+                    } }}
+                </span>
+            </div>
+        </div>
     </div>
 
+    {{-- Nav --}}
     <nav class="space-y-1 p-3">
         @foreach ($nav as $item)
             <a href="{{ $item['href'] }}"
-               class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition
-                      {{ ($item['active'] ?? false) ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
-                <span class="material-symbols-outlined text-xl">{{ $item['icon'] }}</span>
-                {{ $item['label'] }}
+               wire:key="nav-{{ $loop->index }}"
+               class="flex items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition
+                      {{ ($item['active'] ?? false) ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
+                <span class="material-symbols-rounded flex-none text-xl">{{ $item['icon'] }}</span>
+                <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">{{ $item['label'] }}</span>
             </a>
         @endforeach
     </nav>
 
+    {{-- Logout --}}
     <div class="border-t border-gray-100 p-3">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600">
-                <span class="material-symbols-outlined text-xl">logout</span>
-                خروج از حساب
+            <button type="submit" class="flex w-full items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600">
+                <span class="material-symbols-rounded flex-none text-xl">logout</span>
+                <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">خروج از حساب</span>
             </button>
         </form>
     </div>
 </aside>
 
 <!-- Main content -->
-<main class="min-h-screen pt-14 md:mr-72 md:pt-0">
+<main class="min-h-screen pt-14 md:mr-[76px] md:pt-0">
     <div class="mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
         {{ $slot }}
     </div>

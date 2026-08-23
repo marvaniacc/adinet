@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\AppointmentStatus;
+use App\Enums\PaymentStatus;
 use App\Models\Appointment;
 use App\Models\User;
 
@@ -13,11 +14,16 @@ class AppointmentPolicy
         return $this->isClient($user, $appointment) || $this->isLawyer($user, $appointment);
     }
 
-    /** Client cancels a scheduled appointment. */
+    /**
+     * Client cancels a scheduled appointment — but once PAID, self-service
+     * cancellation is disabled (product rule). The lawyer side or an
+     * admin-mediated refund flow handles those instead.
+     */
     public function cancel(User $user, Appointment $appointment): bool
     {
         return $this->isClient($user, $appointment)
-            && $appointment->status === AppointmentStatus::Scheduled;
+            && $appointment->status === AppointmentStatus::Scheduled
+            && $appointment->payment?->status !== PaymentStatus::Paid;
     }
 
     /** Lawyer marks completion / no-show / cancellation. */

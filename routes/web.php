@@ -10,10 +10,14 @@ use App\Livewire\Client\RequestCreate;
 use App\Livewire\Client\RequestIndex;
 use App\Livewire\Client\ReviewCreate as ClientReviewCreate;
 use App\Livewire\Client\ReviewIndex as ClientReviewIndex;
+use App\Livewire\Dashboard\Admin\AppointmentOversight;
 use App\Livewire\Dashboard\Admin\CityManager;
+use App\Livewire\Dashboard\Admin\ClientsIndex;
+use App\Livewire\Dashboard\Admin\LawyersIndex;
 use App\Livewire\Dashboard\Admin\LawyerVerification;
 use App\Livewire\Dashboard\Admin\PaymentIndex;
 use App\Livewire\Dashboard\Admin\ReportIndex;
+use App\Livewire\Dashboard\Admin\RequestOversight;
 use App\Livewire\Dashboard\Admin\ReviewModeration;
 use App\Livewire\Dashboard\Admin\SpecialtyManager;
 use App\Livewire\Dashboard\Lawyer\AppointmentIndex as LawyerAppointmentIndex;
@@ -56,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:'.User::ROLE_CLIENT)->group(function () {
         Route::get('/dashboard/requests', RequestIndex::class)->name('dashboard.requests');
         Route::get('/dashboard/appointments', AppointmentIndex::class)->name('dashboard.appointments');
+        Route::get('/dashboard/profile', App\Livewire\Client\ProfileEdit::class)->name('dashboard.profile');
+
+        // NOTE: client review routes exist below; profile nav placeholder stays.
 
         Route::get('/dashboard/messages', Index::class)->name('messages.index');
         Route::get('/dashboard/messages/{conversationId}', Chat::class)->name('messages.show');
@@ -99,6 +106,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/specialties', SpecialtyManager::class)->name('specialties');
         Route::get('/cities', CityManager::class)->name('cities');
         Route::get('/reviews', ReviewModeration::class)->name('reviews');
+        Route::get('/lawyers', LawyersIndex::class)->name('lawyers.index');
+        Route::get('/clients', ClientsIndex::class)->name('clients.index');
+        Route::get('/consultation-requests', RequestOversight::class)->name('requests.index');
+        Route::get('/appointments', AppointmentOversight::class)->name('appointments.index');
         Route::get('/payments', PaymentIndex::class)->name('payments');
         Route::get('/reports', ReportIndex::class)->name('reports.index');
         Route::get('/reports/{report}/download', [ReportDownloadController::class, 'download'])

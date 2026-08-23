@@ -1,11 +1,11 @@
 <div>
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">درخواست‌های من</h1>
-            <p class="mt-1 text-sm text-gray-500">پیگیری درخواست‌های مشاوره ثبت‌شده شما.</p>
-        </div>
+            <x-dashboard-header title="درخواست‌های من" subtitle="پیگیری درخواست‌های مشاوره ثبت‌شده شما.">
+        <a href="{{ route('lawyers.index') }}" class="btn-primary !py-2 !text-xs"><span class="material-symbols-rounded text-base">add</span> درخواست جدید</a></x-dashboard-header>
+    </div>
         <a href="{{ route('lawyers.index') }}" class="btn-primary !py-2 !text-xs">
-            <span class="material-symbols-outlined text-base">add</span> درخواست جدید
+            <span class="material-symbols-rounded text-base">add</span> درخواست جدید
         </a>
     </div>
 
@@ -45,7 +45,7 @@
 
                         @if ($item->status === \App\Enums\ConsultationRequestStatus::Accepted && $item->appointment)
                             <a href="{{ route('dashboard.appointments') }}" class="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
-                                <span class="material-symbols-outlined text-sm">event</span>
+                                <span class="material-symbols-rounded text-sm">event</span>
                                 نوبت هماهنگ شد: {{ \App\Support\PersianDate::format($item->appointment->scheduled_at, withTime: true) }}
                             </a>
                         @endif
@@ -53,7 +53,7 @@
                         @if ($item->conversation)
                             <a href="{{ route('messages.show', $item->conversation) }}"
                                class="ms-2 inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
-                                <span class="material-symbols-outlined text-sm">forum</span>
+                                <span class="material-symbols-rounded text-sm">forum</span>
                                 گفتگو با وکیل
                             </a>
                         @endif
@@ -70,7 +70,7 @@
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">description</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">description</span>
                 <p class="mt-3 font-medium text-gray-900">هنوز درخواستی ثبت نکرده‌اید</p>
                 <p class="mt-1 text-sm text-gray-500">از میان وکلای تأییدشده، وکیل مناسب خود را انتخاب کنید.</p>
                 <a href="{{ route('lawyers.index') }}" class="btn-primary mt-5">مشاهده وکلا</a>

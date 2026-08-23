@@ -15,7 +15,7 @@
                             <img src="{{ Storage::url($profile->profile_photo) }}" class="h-24 w-24 rounded-full object-cover ring-4 ring-brand-50" alt="">
                         @else
                             <span class="flex h-24 w-24 items-center justify-center rounded-full bg-brand-50 text-brand-600 ring-4 ring-brand-50">
-                                <span class="material-symbols-outlined text-5xl">person</span>
+                                <span class="material-symbols-rounded text-5xl">person</span>
                             </span>
                         @endif
 
@@ -24,13 +24,12 @@
                                 <h1 class="text-2xl font-extrabold text-gray-900">{{ $profile->display_name }}</h1>
                                 @if ($profile->isVerified())
                                     <span title="تأییدشده توسط آدینت" class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-200">
-                                        <span class="material-symbols-outlined text-sm">verified</span>
+                                        <span class="material-symbols-rounded text-sm">verified</span>
                                         تأییدشده
                                     </span>
                                 @endif
                                 @if ($reviewsCount > 0)
                                     <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-200">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
                                         {{ \App\Support\PersianDate::digits($avgRating) }}
                                         <span class="text-amber-400/70">({{ \App\Support\PersianDate::digits($reviewsCount) }})</span>
                                     </span>
@@ -71,7 +70,6 @@
                                 <div class="flex flex-wrap items-center justify-between gap-2">
                                     <span class="inline-flex items-center gap-0.5 text-amber-500" aria-label="{{ $review->rating }} از ۵">
                                         @for ($i = 0; $i < $review->rating; $i++)
-                                            <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
                                         @endfor
                                     </span>
                                     <span class="text-[11px] text-gray-400">{{ \App\Support\PersianDate::format($review->created_at) }}</span>

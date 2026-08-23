@@ -11,7 +11,7 @@
 
         <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a href="{{ route('lawyers.index') }}" class="btn-primary px-8 py-3 text-base">
-                <span class="material-symbols-outlined">search</span>
+                <span class="material-symbols-rounded">search</span>
                 یافتن وکیل مناسب
             </a>
             <a href="{{ route('lawyer.register') }}" class="btn-secondary px-8 py-3 text-base">
@@ -33,7 +33,7 @@
                     ['event_available', '۴. هماهنگی نوبت', 'نوبت مشاوره را تعیین و جلسه را برگزار کنید.'],
                 ] as [$icon, $title, $desc])
                     <div class="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-sm">
-                        <span class="material-symbols-outlined mx-auto block text-4xl text-brand-600">{{ $icon }}</span>
+                        <span class="material-symbols-rounded mx-auto block text-4xl text-brand-600">{{ $icon }}</span>
                         <h3 class="mt-4 font-bold text-gray-900">{{ $title }}</h3>
                         <p class="mt-2 text-sm leading-relaxed text-gray-500">{{ $desc }}</p>
                     </div>

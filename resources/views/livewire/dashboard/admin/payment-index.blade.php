@@ -22,6 +22,7 @@
                     <th class="px-5 py-3 text-right font-medium">مبلغ</th>
                     <th class="px-5 py-3 text-right font-medium">وضعیت</th>
                     <th class="px-5 py-3 text-right font-medium">کد پیگیری</th>
+                    <th class="px-5 py-3"></th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -44,9 +45,19 @@
                             </span>
                         </td>
                         <td dir="ltr" class="px-5 py-3 text-left text-xs text-gray-500">{{ $payment->ref_id ?? '—' }}</td>
+                        <td class="px-5 py-3">
+                            @if ($payment->status === \App\Enums\PaymentStatus::RefundRequested)
+                                <button type="button" wire:click="markRefunded({{ $payment->id }})"
+                                        wire:target="markRefunded({{ $payment->id }})" wire:loading.attr="disabled"
+                                        wire:confirm="بازگشت وجه به موکل انجام شد؟"
+                                        class="rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50">
+                                    بازگشت ثبت شد
+                                </button>
+                            @endif
+                        </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="px-5 py-12 text-center text-gray-400">هنوز پرداختی ثبت نشده است.</td></tr>
+                    <tr><td colspan="6" class="px-5 py-12 text-center text-gray-400">هنوز پرداختی ثبت نشده است.</td></tr>
                 @endforelse
             </tbody>
         </table>

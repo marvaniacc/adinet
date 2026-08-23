@@ -63,11 +63,11 @@
                             <button type="button" wire:click="verify({{ $profile->id }})" wire:loading.attr="disabled"
                                     wire:target="verify({{ $profile->id }})"
                                     class="inline-flex items-center gap-1 rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white hover:bg-green-700 disabled:opacity-50">
-                                <span class="material-symbols-outlined text-sm">check</span> تأیید
+                                <span class="material-symbols-rounded text-sm">check</span> تأیید
                             </button>
                             <button type="button" wire:click="openReject({{ $profile->id }})"
                                     class="inline-flex items-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100">
-                                <span class="material-symbols-outlined text-sm">close</span> رد
+                                <span class="material-symbols-rounded text-sm">close</span> رد
                             </button>
                             <button type="button" wire:click="suspend({{ $profile->id }})"
                                     class="rounded-lg px-3 py-2 text-xs font-medium text-gray-500 hover:bg-gray-100">معلق</button>
@@ -80,7 +80,7 @@
                             <button type="button" wire:click="suspend({{ $profile->id }})"
                                     wire:confirm="این وکیل از نمایش عمومی حذف و معلق شود؟"
                                     class="inline-flex items-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100">
-                                <span class="material-symbols-outlined text-sm">pause_circle</span> تعلیق
+                                <span class="material-symbols-rounded text-sm">pause_circle</span> تعلیق
                             </button>
                         @endif
                     </div>
@@ -102,7 +102,7 @@
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">inbox</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">inbox</span>
                 <p class="mt-3 text-sm text-gray-500">موردی در این وضعیت وجود ندارد.</p>
             </div>
         @endforelse

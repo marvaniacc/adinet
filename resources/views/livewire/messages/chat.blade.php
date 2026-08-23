@@ -38,7 +38,7 @@
 
         <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
             <label class="inline-flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-500 hover:text-brand-600">
-                <span class="material-symbols-outlined text-lg">attach_file</span>
+                <span class="material-symbols-rounded text-lg">attach_file</span>
                 پیوست سند (PDF/JPG/PNG تا ۵MB)
                 <input type="file" class="hidden" wire:model="file" accept=".pdf,.jpg,.jpeg,.png">
             </label>
@@ -71,12 +71,12 @@
                     </div>
                     <div class="flex items-center gap-1">
                         <a href="{{ route('documents.download', $document) }}" class="rounded-lg p-2 text-gray-400 hover:bg-brand-50 hover:text-brand-600" title="دانلود">
-                            <span class="material-symbols-outlined text-lg">download</span>
+                            <span class="material-symbols-rounded text-lg">download</span>
                         </a>
                         @if (auth()->user()->can('delete', $document))
                             <button type="button" wire:click="deleteDocument({{ $document->id }})" wire:confirm="این سند حذف شود؟"
                                     class="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600" title="حذف">
-                                <span class="material-symbols-outlined text-lg">delete</span>
+                                <span class="material-symbols-rounded text-lg">delete</span>
                             </button>
                         @endif
                     </div>

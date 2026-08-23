@@ -6,7 +6,7 @@
     <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-3xl {{ $profile->isVerified() ? 'text-green-600' : 'text-gray-400' }}">
+                <span class="material-symbols-rounded text-3xl {{ $profile->isVerified() ? 'text-green-600' : 'text-gray-400' }}">
                     {{ $profile->isVerified() ? 'verified' : 'workspace_premium' }}
                 </span>
                 <div>
@@ -42,12 +42,12 @@
     {{-- Quick stats / upcoming sections --}}
     <div class="mt-4 grid gap-4 pb-8 sm:grid-cols-2">
         <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-6">
-            <span class="material-symbols-outlined text-2xl text-gray-300">description</span>
+            <span class="material-symbols-rounded text-2xl text-gray-300">description</span>
             <p class="mt-2 font-medium text-gray-900">درخواست‌های مشاوره</p>
             <p class="mt-1 text-xs leading-relaxed text-gray-400">با راه‌اندازی مرحله بعد، درخواست‌های موکلان اینجا نمایش داده می‌شود.</p>
         </div>
         <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-6">
-            <span class="material-symbols-outlined text-2xl text-gray-300">event</span>
+            <span class="material-symbols-rounded text-2xl text-gray-300">event</span>
             <p class="mt-2 font-medium text-gray-900">نوبت‌ها</p>
             <p class="mt-1 text-xs leading-relaxed text-gray-400">مدیریت نوبت‌های مشاوره در مرحله بعدی فعال می‌شود.</p>
         </div>

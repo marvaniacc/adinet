@@ -51,7 +51,7 @@
 
         @if ($this->devOtpCode())
             <div class="mt-4 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-800">
-                <span class="material-symbols-outlined text-base">science</span>
+                <span class="material-symbols-rounded text-base">science</span>
                 حالت توسعه — کد ثابت:
                 <span dir="ltr" class="font-bold tracking-widest">{{ $this->devOtpCode() }}</span>
             </div>
@@ -81,7 +81,7 @@
 
         <div class="mt-6 flex items-center justify-between border-t border-gray-100 pt-5 text-sm">
             <button type="button" wire:click="backToMobile" class="flex items-center gap-1 text-gray-500 hover:text-gray-700">
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
+                <span class="material-symbols-rounded text-base">arrow_forward</span>
                 تغییر شماره
             </button>
 

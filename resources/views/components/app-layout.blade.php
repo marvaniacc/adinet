@@ -13,7 +13,7 @@
 <header class="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <a href="{{ route('home') }}" class="flex items-center gap-2 text-xl font-extrabold text-brand-700">
-            <span class="material-symbols-outlined">balance</span>
+            <span class="material-symbols-rounded">balance</span>
             آدینت
         </a>
 

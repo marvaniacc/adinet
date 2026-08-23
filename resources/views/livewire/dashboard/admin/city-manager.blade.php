@@ -27,10 +27,10 @@
                         {{ $city->is_active ? 'فعال' : 'غیرفعال' }}
                     </span>
                     <button type="button" wire:click="toggle({{ $city->id }})" class="rounded-lg p-1.5 text-gray-400 hover:bg-brand-50 hover:text-brand-600" title="{{ $city->is_active ? 'غیرفعال‌سازی' : 'فعال‌سازی' }}">
-                        <span class="material-symbols-outlined text-base">{{ $city->is_active ? 'visibility' : 'visibility_off' }}</span>
+                        <span class="material-symbols-rounded text-base">{{ $city->is_active ? 'visibility' : 'visibility_off' }}</span>
                     </button>
                     <button type="button" wire:click="edit({{ $city->id }})" class="rounded-lg p-1.5 text-gray-400 hover:bg-brand-50 hover:text-brand-600" title="ویرایش">
-                        <span class="material-symbols-outlined text-base">edit</span>
+                        <span class="material-symbols-rounded text-base">edit</span>
                     </button>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @import 'vazirmatn/Vazirmatn-font-face.css';
-@import 'material-symbols/outlined.css';
+@import 'material-symbols/rounded.css';
 
 @theme {
     --font-sans: 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
@@ -20,24 +20,42 @@
     --color-brand-950: #161d54;
 }
 
-.material-symbols-outlined {
+/* Rounded Material Symbols - Google-product feel */
+.material-symbols-rounded {
     font-variation-settings:
         'FILL' 0,
-        'wght' 400,
+        'wght' 500,
         'GRAD' 0,
         'opsz' 24;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    flex: none;
+    line-height: 1;
 }
 
 body {
     @apply bg-gray-50 text-gray-900 antialiased;
 }
 
-.btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-50;
-}
+@layer components {
+    /* Pill buttons - Material style */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    }
 
-.btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-50;
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    }
+
+    .card {
+        @apply rounded-2xl border border-gray-200 bg-white shadow-sm;
+    }
+
+    .badge {
+        @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium ring-1 ring-inset;
+    }
 }
 
 .input {

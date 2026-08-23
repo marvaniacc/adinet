@@ -106,7 +106,7 @@
                 @elseif ($profile->profile_photo)
                     <img src="{{ Storage::url($profile->profile_photo) }}" class="h-16 w-16 rounded-full object-cover ring-2 ring-brand-100" alt="">
                 @else
-                    <span class="material-symbols-outlined rounded-full bg-gray-100 p-4 text-3xl text-gray-400">person</span>
+                    <span class="material-symbols-rounded rounded-full bg-gray-100 p-4 text-3xl text-gray-400">person</span>
                 @endif
                 <div>
                     <input type="file" wire:model="photo" accept=".jpg,.jpeg,.png,.webp"
@@ -130,7 +130,7 @@
                 </button>
             @elseif ($profile->status === \App\Enums\LawyerStatus::PendingReview)
                 <span class="flex items-center gap-2 text-sm text-amber-600">
-                    <span class="material-symbols-outlined text-base">hourglass_top</span>
+                    <span class="material-symbols-rounded text-base">hourglass_top</span>
                     در انتظار بررسی توسط پشتیبانی آدینت
                 </span>
             @endif

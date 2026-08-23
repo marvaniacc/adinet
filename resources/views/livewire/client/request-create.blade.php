@@ -1,6 +1,6 @@
 <div class="mx-auto max-w-3xl px-4 py-10">
     <a href="{{ route('lawyers.show', $profile->slug) }}" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
-        <span class="material-symbols-outlined text-base">arrow_forward</span>
+        <span class="material-symbols-rounded text-base">arrow_forward</span>
         بازگشت به پروفایل وکیل
     </a>
 

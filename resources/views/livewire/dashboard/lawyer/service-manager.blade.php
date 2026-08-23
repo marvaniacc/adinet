@@ -1,11 +1,11 @@
 <div>
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">خدمات مشاوره</h1>
-            <p class="mt-1 text-sm text-gray-500">خدمات مشاوره خود را تعریف کنید تا موکلان بتوانند درخواست دهند.</p>
-        </div>
+            <x-dashboard-header title="خدمات مشاوره" subtitle="خدمات مشاوره خود را تعریف کنید تا موکلان بتوانند درخواست دهند.">
+        <button type="button" wire:click="openCreateForm" class="btn-primary !py-2 !text-xs"><span class="material-symbols-rounded text-base">add</span> خدمت جدید</button></x-dashboard-header>
+    </div>
         <button type="button" wire:click="openCreateForm" class="btn-primary">
-            <span class="material-symbols-outlined text-base">add</span>
+            <span class="material-symbols-rounded text-base">add</span>
             خدمت جدید
         </button>
     </div>
@@ -82,10 +82,10 @@
                             @endif
                         </div>
                         <p class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base text-brand-600">{{ match($service->consultation_type) { \App\Enums\ConsultationType::Phone => 'call', \App\Enums\ConsultationType::Online => 'chat', default => 'groups' } }}</span>{{ $service->consultation_type->label() }}</span>
-                            <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base text-gray-400">schedule</span>{{ $service->duration_minutes }} دقیقه</span>
+                            <span class="inline-flex items-center gap-1"><span class="material-symbols-rounded text-base text-brand-600">{{ match($service->consultation_type) { \App\Enums\ConsultationType::Phone => 'call', \App\Enums\ConsultationType::Online => 'chat', default => 'groups' } }}</span>{{ $service->consultation_type->label() }}</span>
+                            <span class="inline-flex items-center gap-1"><span class="material-symbols-rounded text-base text-gray-400">schedule</span>{{ $service->duration_minutes }} دقیقه</span>
                             @if ($service->priceLabel())
-                                <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-base text-gray-400">payments</span>{{ $service->priceLabel() }}</span>
+                                <span class="inline-flex items-center gap-1"><span class="material-symbols-rounded text-base text-gray-400">payments</span>{{ $service->priceLabel() }}</span>
                             @endif
                         </p>
                         @if ($service->description)
@@ -96,22 +96,22 @@
                     <div class="flex shrink-0 items-center gap-1.5">
                         <button type="button" wire:click="toggle({{ $service->id }})" title="{{ $service->is_active ? 'غیرفعال‌سازی' : 'فعال‌سازی' }}"
                                 class="rounded-lg p-2 {{ $service->is_active ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100' }}">
-                            <span class="material-symbols-outlined text-xl">{{ $service->is_active ? 'toggle_on' : 'toggle_off' }}</span>
+                            <span class="material-symbols-rounded text-xl">{{ $service->is_active ? 'toggle_on' : 'toggle_off' }}</span>
                         </button>
                         <button type="button" wire:click="edit({{ $service->id }})" title="ویرایش" class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-brand-600">
-                            <span class="material-symbols-outlined text-xl">edit</span>
+                            <span class="material-symbols-rounded text-xl">edit</span>
                         </button>
                         <button type="button" wire:click="delete({{ $service->id }})" title="حذف"
                                 wire:confirm="این خدمت حذف شود؟"
                                 class="rounded-lg p-2 text-gray-500 hover:bg-red-50 hover:text-red-600">
-                            <span class="material-symbols-outlined text-xl">delete</span>
+                            <span class="material-symbols-rounded text-xl">delete</span>
                         </button>
                     </div>
                 </div>
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">miscellaneous_services</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">miscellaneous_services</span>
                 <p class="mt-3 font-medium text-gray-900">هنوز خدمتی ثبت نکرده‌اید</p>
                 <p class="mt-1 text-sm text-gray-500">برای دریافت درخواست مشاوره، ابتدا خدمات خود را تعریف کنید.</p>
             </div>

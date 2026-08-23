@@ -20,7 +20,6 @@
                                    {{ (int) $rating >= $value && $rating !== ''
                                        ? 'border-amber-400 bg-amber-50 text-amber-500'
                                        : 'border-gray-200 bg-white text-gray-300 hover:border-amber-200 hover:text-amber-300' }}">
-                        <span class="material-symbols-outlined" style="{{ (int) $rating >= $value && $rating !== '' ? 'font-variation-settings: \'FILL\' 1;' : '' }}">star</span>
                     </button>
                 @endforeach
             </div>

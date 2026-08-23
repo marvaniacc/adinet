@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Lawyer;
 
 use App\Enums\AppointmentStatus;
 use App\Enums\ConsultationRequestStatus;
+use App\Enums\PaymentStatus;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,14 @@ class AppointmentIndex extends Component
             if ($newStatus === AppointmentStatus::Completed) {
                 $appointment->consultationRequest->forceFill([
                     'status' => ConsultationRequestStatus::Completed,
+                ])->save();
+            }
+
+            // Lawyer cancelled a PAID session -> flag the money for refund.
+            if ($newStatus === AppointmentStatus::Cancelled
+                && ($appointment->payment?->status) === PaymentStatus::Paid) {
+                $appointment->payment->forceFill([
+                    'status' => PaymentStatus::RefundRequested,
                 ])->save();
             }
         });

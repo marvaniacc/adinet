@@ -26,7 +26,7 @@
             </a>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">forum</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">forum</span>
                 <p class="mt-3 font-medium text-gray-900">گفتگویی وجود ندارد</p>
                 <p class="mt-1 text-sm text-gray-500">با ثبت درخواست مشاوره، گفتگو با وکیل آغاز می‌شود.</p>
             </div>

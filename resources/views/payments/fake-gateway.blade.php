@@ -8,7 +8,7 @@
 </head>
 <body class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
 <div class="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm text-center">
-    <span class="material-symbols-outlined mx-auto block text-4xl text-brand-600">account_balance</span>
+    <span class="material-symbols-rounded mx-auto block text-4xl text-brand-600">account_balance</span>
     <h1 class="mt-3 font-bold text-gray-900">درگاه پرداخت آزمایشی (حالت fake)</h1>
     <p class="mt-2 text-sm text-gray-500">این صفحه فقط در محیط توسعه نمایش داده می‌شود. درگاه واقعی زرین‌پال با تنظیم ZARINPAL_MODE فعال می‌گردد.</p>
     <p dir="ltr" class="mt-3 rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-400">{{ $authority }}</p>

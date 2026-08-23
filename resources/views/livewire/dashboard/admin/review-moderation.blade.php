@@ -30,7 +30,6 @@
 
                         <span class="mt-1.5 inline-flex items-center gap-0.5 text-amber-500">
                             @for ($i = 0; $i < $review->rating; $i++)
-                                <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
                             @endfor
                             <span class="ms-1 text-xs text-gray-400">{{ \App\Support\PersianDate::format($review->created_at) }}</span>
                         </span>
@@ -56,7 +55,7 @@
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">inbox</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">inbox</span>
                 <p class="mt-3 text-sm text-gray-500">نظری در این وضعیت وجود ندارد.</p>
             </div>
         @endforelse

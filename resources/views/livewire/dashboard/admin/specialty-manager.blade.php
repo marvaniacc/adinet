@@ -49,11 +49,11 @@
                         <td class="px-5 py-3">
                             <div class="flex items-center justify-end gap-1">
                                 <button type="button" wire:click="edit({{ $specialty->id }})" class="rounded-lg p-2 text-gray-400 hover:bg-brand-50 hover:text-brand-600" title="ویرایش">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
+                                    <span class="material-symbols-rounded text-lg">edit</span>
                                 </button>
                                 <button type="button" wire:click="delete({{ $specialty->id }})" wire:confirm="حذف شود؟ ارتباط وکلا با این تخصص نیز حذف خواهد شد."
                                         class="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600" title="حذف">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                    <span class="material-symbols-rounded text-lg">delete</span>
                                 </button>
                             </div>
                         </td>

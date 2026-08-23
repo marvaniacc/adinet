@@ -60,7 +60,7 @@
 
                         @if ($item->status === \App\Enums\ConsultationRequestStatus::Accepted && $item->appointment)
                             <p class="mt-2 inline-flex items-center gap-1 rounded-lg bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700">
-                                <span class="material-symbols-outlined text-sm">event</span>
+                                <span class="material-symbols-rounded text-sm">event</span>
                                 نوبت: {{ \App\Support\PersianDate::format($item->appointment->scheduled_at, withTime: true) }}
                             </p>
                         @endif
@@ -68,7 +68,7 @@
                         @if ($item->conversation && $item->status !== \App\Enums\ConsultationRequestStatus::Pending)
                             <a href="{{ route('dashboard.lawyer.messages.show', $item->conversation) }}"
                                class="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700">
-                                <span class="material-symbols-outlined text-sm">forum</span>
+                                <span class="material-symbols-rounded text-sm">forum</span>
                                 گفتگو با موکل
                             </a>
                         @endif
@@ -128,7 +128,7 @@
             </div>
         @empty
             <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-14 text-center">
-                <span class="material-symbols-outlined mx-auto block text-4xl text-gray-300">inbox</span>
+                <span class="material-symbols-rounded mx-auto block text-4xl text-gray-300">inbox</span>
                 <p class="mt-3 font-medium text-gray-900">درخواستی در این وضعیت نیست</p>
                 <p class="mt-1 text-sm text-gray-500">درخواست‌های جدید موکلان پس از تأیید پروفایل شما اینجا نمایش داده می‌شود.</p>
             </div>

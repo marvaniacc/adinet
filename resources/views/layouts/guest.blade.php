@@ -11,7 +11,7 @@
 <body class="min-h-screen bg-gray-50 antialiased">
 <div class="flex min-h-screen flex-col items-center justify-center px-4 py-12">
     <a href="{{ route('home') }}" class="mb-8 flex items-center gap-2 text-2xl font-extrabold text-brand-700">
-        <span class="material-symbols-outlined text-brand-600">balance</span>
+        <span class="material-symbols-rounded text-brand-600">balance</span>
         آدینت
     </a>
 
