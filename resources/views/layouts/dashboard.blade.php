@@ -1,38 +1,49 @@
 @php
     $user = auth()->user();
+    file_put_contents('/tmp/opencode/layout-route.txt', (request()->route()?->getName() ?? 'NULL').' | '.request()->getPathInfo().'\n', FILE_APPEND);
 
+    /*
+     * Active state derives from the current route name via routeIs()
+     * patterns - nothing is hardcoded per position.
+     */
     $nav = match (true) {
         $user->isAdmin() => [
-            ['label' => 'داشبورد', 'icon' => 'dashboard', 'href' => route('admin.dashboard'), 'active' => true],
-            ['label' => 'تأیید وکلا', 'icon' => 'verified', 'href' => route('admin.lawyers.verification')],
-            ['label' => 'وکلا', 'icon' => 'gavel', 'href' => route('admin.lawyers.index')],
-            ['label' => 'موکلان', 'icon' => 'group', 'href' => route('admin.clients.index')],
-            ['label' => 'درخواست‌ها', 'icon' => 'description', 'href' => route('admin.requests.index')],
-            ['label' => 'نوبت‌ها', 'icon' => 'event', 'href' => route('admin.appointments.index')],
-            ['label' => 'نظرات', 'icon' => 'reviews', 'href' => route('admin.reviews')],
-            ['label' => 'پرداخت‌ها', 'icon' => 'payments', 'href' => route('admin.payments')],
-            ['label' => 'گزارشات', 'icon' => 'summarize', 'href' => route('admin.reports.index')],
-            ['label' => 'تخصص‌ها', 'icon' => 'category', 'href' => route('admin.specialties')],
-            ['label' => 'شهرها', 'icon' => 'location_city', 'href' => route('admin.cities')],
+            ['label' => 'داشبورد', 'icon' => 'dashboard', 'svg' => 'dashboard', 'href' => route('admin.dashboard'), 'active' => request()->routeIs('admin.dashboard')],
+            ['label' => 'تأیید وکلا', 'icon' => 'verified', 'svg' => 'verified', 'href' => route('admin.lawyers.verification'), 'active' => request()->routeIs('admin.lawyers.verification')],
+            ['label' => 'وکلا', 'icon' => 'gavel', 'svg' => 'lawyer', 'href' => route('admin.lawyers.index'), 'active' => request()->routeIs('admin.lawyers.index')],
+            ['label' => 'موکلان', 'icon' => 'group', 'svg' => 'clients', 'href' => route('admin.clients.index'), 'active' => request()->routeIs('admin.clients.index')],
+            ['label' => 'درخواست‌ها', 'icon' => 'description', 'svg' => 'request', 'href' => route('admin.requests.index'), 'active' => request()->routeIs('admin.requests.index')],
+            ['label' => 'نوبت‌ها', 'icon' => 'event', 'svg' => 'appointment', 'href' => route('admin.appointments.index'), 'active' => request()->routeIs('admin.appointments.index')],
+            ['label' => 'نظرات', 'icon' => 'reviews', 'svg' => 'review', 'href' => route('admin.reviews'), 'active' => request()->routeIs('admin.reviews')],
+            ['label' => 'پرداخت‌ها', 'icon' => 'payments', 'svg' => 'payment', 'href' => route('admin.payments'), 'active' => request()->routeIs('admin.payments')],
+            ['label' => 'گزارشات', 'icon' => 'summarize', 'svg' => 'report', 'href' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*')],
+            ['label' => 'تخصص‌ها', 'icon' => 'category', 'svg' => 'specialty', 'href' => route('admin.specialties'), 'active' => request()->routeIs('admin.specialties')],
+            ['label' => 'شهرها', 'icon' => 'location_city', 'svg' => 'city', 'href' => route('admin.cities'), 'active' => request()->routeIs('admin.cities')],
         ],
         $user->isLawyer() => [
-            ['label' => 'پنل وکیل', 'icon' => 'dashboard', 'href' => route('dashboard.lawyer.index'), 'active' => true],
-            ['label' => 'درخواست‌های مشاوره', 'icon' => 'description', 'href' => route('dashboard.lawyer.requests')],
-            ['label' => 'نوبت‌ها', 'icon' => 'event', 'href' => route('dashboard.lawyer.appointments')],
-            ['label' => 'ساعات کاری', 'icon' => 'schedule', 'href' => route('dashboard.lawyer.availability')],
-            ['label' => 'پیام‌ها', 'icon' => 'forum', 'href' => route('dashboard.lawyer.messages.index')],
-            ['label' => 'خدمات مشاوره', 'icon' => 'miscellaneous_services', 'href' => route('dashboard.lawyer.services')],
-            ['label' => 'پروفایل حرفه‌ای', 'icon' => 'badge', 'href' => route('dashboard.lawyer.profile')],
-            ['label' => 'نظرات موکلان', 'icon' => 'reviews', 'href' => route('dashboard.lawyer.reviews')],
+            ['label' => 'پنل وکیل', 'icon' => 'dashboard', 'svg' => 'dashboard', 'href' => route('dashboard.lawyer.index'), 'active' => request()->routeIs('dashboard.lawyer.index')],
+            ['label' => 'درخواست‌های مشاوره', 'icon' => 'description', 'svg' => 'request', 'href' => route('dashboard.lawyer.requests'), 'active' => request()->routeIs('dashboard.lawyer.requests')],
+            ['label' => 'نوبت‌ها', 'icon' => 'event', 'svg' => 'appointment', 'href' => route('dashboard.lawyer.appointments'), 'active' => request()->routeIs('dashboard.lawyer.appointments')],
+            ['label' => 'ساعات کاری', 'icon' => 'schedule', 'svg' => 'availability', 'href' => route('dashboard.lawyer.availability'), 'active' => request()->routeIs('dashboard.lawyer.availability')],
+            ['label' => 'پیام‌ها', 'icon' => 'forum', 'svg' => 'message', 'href' => route('dashboard.lawyer.messages.index'), 'active' => request()->routeIs('dashboard.lawyer.messages.*')],
+            ['label' => 'خدمات مشاوره', 'icon' => 'miscellaneous_services', 'svg' => 'service', 'href' => route('dashboard.lawyer.services'), 'active' => request()->routeIs('dashboard.lawyer.services')],
+            ['label' => 'پروفایل حرفه‌ای', 'icon' => 'badge', 'svg' => 'profile', 'href' => route('dashboard.lawyer.profile'), 'active' => request()->routeIs('dashboard.lawyer.profile')],
+            ['label' => 'نظرات موکلان', 'icon' => 'reviews', 'svg' => 'review', 'href' => route('dashboard.lawyer.reviews'), 'active' => request()->routeIs('dashboard.lawyer.reviews')],
         ],
         default => [
-            ['label' => 'داشبورد', 'icon' => 'dashboard', 'href' => route('dashboard'), 'active' => true],
-            ['label' => 'درخواست‌های من', 'icon' => 'description', 'href' => route('dashboard.requests')],
-            ['label' => 'نوبت‌های من', 'icon' => 'event', 'href' => route('dashboard.appointments')],
-            ['label' => 'پیام‌ها', 'icon' => 'forum', 'href' => route('messages.index')],
-            ['label' => 'پروفایل', 'icon' => 'person', 'href' => route('dashboard.profile')],
-            ['label' => 'نظرات من', 'icon' => 'reviews', 'href' => route('reviews.index')],
+            ['label' => 'داشبورد', 'icon' => 'dashboard', 'svg' => 'dashboard', 'href' => route('dashboard'), 'active' => request()->routeIs('dashboard')],
+            ['label' => 'درخواست‌های من', 'icon' => 'description', 'svg' => 'request', 'href' => route('dashboard.requests'), 'active' => request()->routeIs('dashboard.requests')],
+            ['label' => 'نوبت‌های من', 'icon' => 'event', 'svg' => 'appointment', 'href' => route('dashboard.appointments'), 'active' => request()->routeIs('dashboard.appointments')],
+            ['label' => 'پیام‌ها', 'icon' => 'forum', 'svg' => 'message', 'href' => route('messages.index'), 'active' => request()->routeIs('messages.*')],
+            ['label' => 'پروفایل', 'icon' => 'person', 'svg' => 'profile', 'href' => route('dashboard.profile'), 'active' => request()->routeIs('dashboard.profile')],
+            ['label' => 'نظرات من', 'icon' => 'reviews', 'svg' => 'review', 'href' => route('reviews.index'), 'active' => request()->routeIs('reviews.index')],
         ],
+    };
+
+    $roleLabel = match ($user->role) {
+        App\Models\User::ROLE_ADMIN => 'مدیر',
+        App\Models\User::ROLE_LAWYER => 'وکیل',
+        default => 'موکل',
     };
 @endphp
 
@@ -49,7 +60,29 @@
 </head>
 <body class="min-h-screen bg-gray-50 antialiased" x-data="{ drawerOpen: false }">
 
-<!-- Mobile top bar -->
+{{-- ===== Desktop top header (persistent on every dashboard page) ===== --}}
+<header class="sticky top-0 z-30 hidden h-16 items-center justify-between gap-4 border-b border-gray-200 bg-white/95 px-6 backdrop-blur md:flex md:mr-[76px]">
+    <div class="flex items-center gap-2 text-sm text-gray-400">
+        <span class="material-symbols-rounded text-xl text-brand-600">balance</span>
+        <span class="font-semibold text-gray-700">آدینت</span>
+        <span class="text-gray-300">/</span>
+        <span>{{ $roleLabel }}</span>
+    </div>
+
+    {{-- User info block (moved from sidebar) --}}
+    <div class="flex items-center gap-3">
+        <div class="text-end leading-tight">
+            <p class="text-sm font-semibold text-gray-900">{{ $user->fullName() }}</p>
+            <p dir="ltr" class="text-[11px] text-gray-400">{{ $user->mobile }}</p>
+        </div>
+        <span class="badge bg-brand-50 text-brand-700 ring-brand-200">{{ $roleLabel }}</span>
+        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-100">
+            <span class="material-symbols-rounded text-xl text-brand-600">person</span>
+        </span>
+    </div>
+</header>
+
+{{-- ===== Mobile top bar ===== --}}
 <div class="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-gray-200 bg-white px-4 md:hidden">
     <button type="button" class="rounded-full p-2 text-gray-600 hover:bg-gray-100" x-on:click="drawerOpen = true" aria-label="منو">
         <span class="material-symbols-rounded">menu</span>
@@ -58,47 +91,40 @@
         <span class="material-symbols-rounded">balance</span>
         آدینت
     </a>
-    <span class="w-9"></span>
+    <a href="{{ route($user->isLawyer() ? 'dashboard.lawyer.profile' : 'dashboard.profile') }}" class="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 ring-1 ring-brand-100" aria-label="پروفایل">
+        <span class="material-symbols-rounded text-lg text-brand-600">person</span>
+    </a>
 </div>
 
 <!-- Mobile drawer backdrop -->
 <div class="fixed inset-0 z-40 bg-gray-900/50 md:hidden" x-show="drawerOpen" x-on:click="drawerOpen = false" x-transition.opacity x-cloak></div>
 
-{{-- Desktop: icon rail that expands on hover (overlays content).
-    Mobile: off-canvas drawer at full label width. --}}
+{{-- ===== Sidebar =====
+     Desktop: icon rail that expands when the pointer enters the WHOLE
+     container (Alpine mouseenter/mouseleave - no CSS :hover width dance,
+     so moving toward labels/scrollbar cannot collapse it).
+     Mobile: off-canvas drawer at full label width. --}}
 <aside
-    class="group/sidebar fixed inset-y-0 right-0 z-50 overflow-y-auto overflow-x-hidden border-l border-gray-200 bg-white transition-all duration-200
-           w-64 translate-x-full md:translate-x-0 md:w-[76px] md:hover:w-64 md:hover:shadow-2xl"
-    :class="drawerOpen && '!translate-x-0'"
+    x-data="{ railOpen: false }"
+    x-on:mouseenter="if (window.innerWidth >= 768) railOpen = true"
+    x-on:mouseleave="railOpen = false"
+    x-bind:class="{
+        'translate-x-0 shadow-2xl': drawerOpen || railOpen,
+        'md:w-64': railOpen || drawerOpen,
+        'md:w-[76px]': ! (railOpen || drawerOpen),
+    }"
+    class="fixed inset-y-0 right-0 z-50 w-64 overflow-y-auto overflow-x-hidden border-l border-gray-200 bg-white transition-all duration-200 translate-x-full md:translate-x-0"
     x-cloak
 >
     {{-- Brand --}}
-    <div class="flex h-16 items-center gap-2.5 overflow-hidden whitespace-nowrap border-b border-gray-100 px-5">
+    <div class="flex h-16 flex-none items-center gap-2.5 whitespace-nowrap border-b border-gray-100 px-5">
         <a href="{{ route('home') }}" class="flex flex-none items-center gap-2 font-extrabold text-brand-700">
-            <span class="material-symbols-rounded text-2xl">balance</span>
-            <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">آدینت</span>
+            <span class="material-symbols-rounded flex-none text-2xl">balance</span>
+            <span>آدینت</span>
         </a>
         <button type="button" class="flex-none rounded-full p-1.5 text-gray-500 hover:bg-gray-100 md:hidden" x-on:click="drawerOpen = false" aria-label="بستن">
             <span class="material-symbols-rounded">close</span>
         </button>
-    </div>
-
-    {{-- User --}}
-    <div class="overflow-hidden whitespace-nowrap border-b border-gray-100 px-5 py-4">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-rounded flex-none text-2xl text-brand-600">account_circle</span>
-            <div class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">
-                <p class="text-sm font-semibold text-gray-900">{{ $user->fullName() }}</p>
-                <p dir="ltr" class="text-right text-xs text-gray-400">{{ $user->mobile }}</p>
-                <span class="badge mt-1 bg-brand-50 text-brand-700 ring-brand-200">
-                    {{ match ($user->role) {
-                        App\Models\User::ROLE_ADMIN => 'مدیر',
-                        App\Models\User::ROLE_LAWYER => 'وکیل',
-                        default => 'موکل',
-                    } }}
-                </span>
-            </div>
-        </div>
     </div>
 
     {{-- Nav --}}
@@ -106,21 +132,25 @@
         @foreach ($nav as $item)
             <a href="{{ $item['href'] }}"
                wire:key="nav-{{ $loop->index }}"
-               class="flex items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition
-                      {{ ($item['active'] ?? false) ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}">
-                <span class="material-symbols-rounded flex-none text-xl">{{ $item['icon'] }}</span>
-                <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">{{ $item['label'] }}</span>
+               @click="drawerOpen = false"
+               class="flex items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
+                      {{ $item['active']
+                          ? 'bg-brand-50 font-semibold text-brand-700'
+                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}"
+               {!! $item['active'] ? 'aria-current="page"' : '' !!}>
+                <x-svg-icon name="{{ $item['svg'] }}" fallback="{{ $item['icon'] }}" class="h-5 w-5 flex-none"/>
+                <span>{{ $item['label'] }}</span>
             </a>
         @endforeach
     </nav>
 
-    {{-- Logout --}}
+    {{-- Logout pinned at bottom --}}
     <div class="border-t border-gray-100 p-3">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="flex w-full items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600">
                 <span class="material-symbols-rounded flex-none text-xl">logout</span>
-                <span class="md:opacity-0 md:transition-opacity md:duration-200 md:group-hover/sidebar:opacity-100">خروج از حساب</span>
+                <span>خروج از حساب</span>
             </button>
         </form>
     </div>

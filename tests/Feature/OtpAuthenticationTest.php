@@ -8,6 +8,8 @@ use Livewire\Features\SupportTesting\Testable;
 use Tests\Support\RecordingSmsProvider;
 
 beforeEach(function () {
+    // These suites test REAL delivery; ignore a local OTP_DEV_MODE=true.
+    config(['otp.dev_mode' => false]);
     $this->sms = new RecordingSmsProvider;
     $this->app->instance(SmsProvider::class, $this->sms);
 });
