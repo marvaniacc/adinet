@@ -1,6 +1,5 @@
 @php
     $user = auth()->user();
-    file_put_contents('/tmp/opencode/layout-route.txt', (request()->route()?->getName() ?? 'NULL').' | '.request()->getPathInfo().'\n', FILE_APPEND);
 
     /*
      * Active state derives from the current route name via routeIs()
