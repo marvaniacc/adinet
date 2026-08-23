@@ -38,6 +38,21 @@ const { chromium } = require('playwright');
 
   if (collapsed > 120) throw new Error('expected icon-rail collapsed state');
 
+  // --- ICON-ONLY: every nav label must be display:none while collapsed ---
+  const totalLabels = await page.locator('aside nav a > span:last-child').count();
+  const hiddenLabels = await page.locator('aside nav a > span:last-child').evaluateAll(
+    (els) => els.filter((el) => getComputedStyle(el).display === 'none').length
+  );
+  console.log(`collapsed labels hidden: ${hiddenLabels}/${totalLabels}`);
+  if (hiddenLabels !== totalLabels) {
+    throw new Error('PASS-3: some nav labels are visible in the collapsed rail');
+  }
+
+  // And nothing overflows the rail horizontally.
+  const overflow = await aside.evaluate((el) => el.scrollWidth - el.clientWidth);
+  console.log('horizontal overflow while collapsed:', overflow);
+  if (overflow > 2) throw new Error('labels still occupy space / overflow the rail');
+
   // --- hover the rail (icon area) ---
   const railX = box.x + box.width / 2;
   const railY = box.y + 200;
@@ -76,6 +91,37 @@ const { chromium } = require('playwright');
   const after = await width();
   console.log('after leave width:', after);
   if (after > 120) throw new Error('did not collapse after leaving');
+
+  // Collapsed again -> labels hidden once more.
+  const hiddenAfter = await page.locator('aside nav a > span:last-child').evaluateAll(
+    (els) => els.filter((el) => getComputedStyle(el).display === 'none').length
+  );
+  if (hiddenAfter !== totalLabels) throw new Error('labels did not re-hide after collapse');
+
+  // --- MOBILE drawer keeps labels visible (reuses session state; no
+  //     second OTP needed, which would trip the resend cooldown) ---
+  const state = await page.context().storageState();
+  const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, storageState: state });
+  const mob = await mctx.newPage();
+  await mob.goto(base + '/admin'); // admin session: /dashboard is client-only
+  console.log('[mobile] url after goto:', mob.url());
+  const menuInfo = await mob.evaluate(() => ({
+      url: location.pathname,
+      title: document.title,
+      bodyStart: document.body.innerHTML.slice(0, 400),
+      buttonCount: document.querySelectorAll('button').length,
+      asideCount: document.querySelectorAll('aside').length,
+  }));
+  console.log('[mobile debug]', JSON.stringify(menuInfo, null, 1));
+  await mob.click('button[aria-label="منو"]');
+  await mob.waitForTimeout(300);
+  const mobLabelsVisible = await mob.locator('aside nav a > span:last-child').evaluateAll(
+    (els) => els.filter((el) => getComputedStyle(el).display !== 'none').length
+  );
+  const mobTotal = await mob.locator('aside nav a > span:last-child').count();
+  console.log(`mobile drawer labels visible: ${mobLabelsVisible}/${mobTotal}`);
+  if (mobLabelsVisible !== mobTotal) throw new Error('mobile drawer lost its labels');
+  await mob.close();
 
   // --- active-state spot check on this page ---
   const activeLabel = await page.locator('aside a[aria-current="page"] span:last-child').first().textContent();

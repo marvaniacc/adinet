@@ -119,7 +119,7 @@
     <div class="flex h-16 flex-none items-center gap-2.5 whitespace-nowrap border-b border-gray-100 px-5">
         <a href="{{ route('home') }}" class="flex flex-none items-center gap-2 font-extrabold text-brand-700">
             <span class="material-symbols-rounded flex-none text-2xl">balance</span>
-            <span>آدینت</span>
+            <span :class="railOpen ? '' : 'md:hidden'">آدینت</span>
         </a>
         <button type="button" class="flex-none rounded-full p-1.5 text-gray-500 hover:bg-gray-100 md:hidden" x-on:click="drawerOpen = false" aria-label="بستن">
             <span class="material-symbols-rounded">close</span>
@@ -132,13 +132,14 @@
             <a href="{{ $item['href'] }}"
                wire:key="nav-{{ $loop->index }}"
                @click="drawerOpen = false"
-               class="flex items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition-colors
+               :class="railOpen ? 'px-3' : 'md:justify-center md:px-0'"
+               class="flex items-center gap-3 whitespace-nowrap rounded-xl py-2.5 text-sm font-medium transition-colors
                       {{ $item['active']
                           ? 'bg-brand-50 font-semibold text-brand-700'
                           : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900' }}"
                {!! $item['active'] ? 'aria-current="page"' : '' !!}>
                 <x-svg-icon name="{{ $item['svg'] }}" fallback="{{ $item['icon'] }}" class="h-5 w-5 flex-none"/>
-                <span>{{ $item['label'] }}</span>
+                <span :class="railOpen ? '' : 'md:hidden'">{{ $item['label'] }}</span>
             </a>
         @endforeach
     </nav>
@@ -147,9 +148,10 @@
     <div class="border-t border-gray-100 p-3">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="flex w-full items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600">
+            <button type="submit" :class="railOpen ? 'w-full px-3' : 'md:w-full md:justify-center md:px-0'"
+                    class="flex items-center gap-3 whitespace-nowrap rounded-xl py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-red-50 hover:text-red-600">
                 <span class="material-symbols-rounded flex-none text-xl">logout</span>
-                <span>خروج از حساب</span>
+                <span :class="railOpen ? '' : 'md:hidden'">خروج از حساب</span>
             </button>
         </form>
     </div>
