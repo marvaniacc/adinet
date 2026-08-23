@@ -79,7 +79,11 @@
                                     لغو نوبت
                                 </button>
                             @else
-                                <span class="rounded-lg bg-gray-50 px-3 py-2 text-[10px] leading-relaxed text-gray-400">برای لغو با پشتیبانی تماس بگیرید</span>
+                                @php($supportMobile = \App\Models\Setting::get('support_mobile'))
+<span class="max-w-40 rounded-lg bg-gray-50 px-3 py-2 text-center text-[10px] leading-relaxed text-gray-400">
+                                برای لغو با پشتیبانی تماس بگیرید
+                                @if ($supportMobile)<br><span dir="ltr">{{ $supportMobile }}</span>@endif
+                            </span>
                             @endif
                         @endif
                     </div>

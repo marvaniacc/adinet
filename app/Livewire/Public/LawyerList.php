@@ -26,6 +26,14 @@ class LawyerList extends Component
     #[Url]
     public $type = '';
 
+    #[Url]
+    public string $search = '';
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
     public function updatedCity(): void
     {
         $this->resetPage();
@@ -74,6 +82,14 @@ class LawyerList extends Component
             $query->whereHas('services', fn ($q) => $q
                 ->where('consultation_type', $type)
                 ->where('is_active', true));
+        }
+
+        if ($this->search !== '') {
+            $term = '%'.str_replace('%', '\\%', trim($this->search)).'%';
+            $query->where(function ($q) use ($term) {
+                $q->where('display_name', 'like', $term)
+                    ->orWhereHas('specialties', fn ($s) => $s->where('name', 'like', $term));
+            });
         }
 
         $lawyers = $query

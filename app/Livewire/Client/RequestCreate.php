@@ -12,6 +12,7 @@ use App\Services\SlotGenerator;
 use App\Support\JalaliDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -87,6 +88,26 @@ class RequestCreate extends Component
 
     public function submit(): void
     {
+        // Anti-spam: max 5 new requests per client per hour.
+        if (RateLimiter::tooManyAttempts('req-create:'.Auth::id(), 5)) {
+            $this->addError('subject', 'تعداد درخواست‌های شما بیش از حد مجاز است. لطفاً بعداً تلاش کنید.');
+
+            return;
+        }
+
+        // One OPEN request per client per lawyer.
+        $openExists = ConsultationRequest::query()
+            ->where('client_id', Auth::id())
+            ->where('lawyer_profile_id', $this->profile->id)
+            ->whereIn('status', [ConsultationRequestStatus::Pending, ConsultationRequestStatus::Accepted])
+            ->exists();
+
+        if ($openExists) {
+            $this->addError('subject', 'شما یک درخواست باز نزد این وکیل دارید. لطفاً ابتدا آن را پیگیری یا لغو کنید.');
+
+            return;
+        }
+
         $data = $this->validate();
 
         $request = DB::transaction(function () use ($data) {
@@ -111,6 +132,8 @@ class RequestCreate extends Component
 
             return $consultationRequest;
         });
+
+        RateLimiter::hit('req-create:'.Auth::id(), 3600);
 
         session()->flash('status', 'درخواست مشاوره شما ثبت شد و به وکیل اطلاع داده شد.');
 

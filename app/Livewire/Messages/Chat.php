@@ -54,6 +54,8 @@ class Chat extends Component
 
     public function send(): void
     {
+        $this->authorize('sendMessage', $this->conversation);
+
         // Light anti-spam ceiling per user.
         if (RateLimiter::tooManyAttempts('chat:'.Auth::id(), 30)) {
             $this->addError('body', 'تعداد پیام‌ها بیش از حد مجاز است. چند لحظه بعد تلاش کنید.');

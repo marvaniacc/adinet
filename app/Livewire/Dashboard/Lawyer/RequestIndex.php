@@ -11,8 +11,10 @@ use App\Models\ConsultationRequest;
 use App\Models\LawyerProfile;
 use App\Notifications\ConsultationRequestDecided;
 use App\Support\JalaliDate;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -133,6 +135,12 @@ class RequestIndex extends Component
 
     public function accept(int $id): void
     {
+        if (! Auth::user()->lawyerProfile->isActive()) {
+            session()->flash('error', 'حساب شما فعال نیست؛ امکان پاسخ به درخواست‌ها وجود ندارد.');
+
+            return;
+        }
+
         $data = $this->validate();
         $data = ['scheduled_at' => $data['scheduled_at'], 'accept_notes' => $this->accept_notes ?: null];
 
@@ -141,6 +149,22 @@ class RequestIndex extends Component
             ->findOrFail($id);
 
         $this->authorize('decide', $consultationRequest);
+
+        // Calendar-conflict: no overlapping SCHEDULED appointment for this lawyer.
+        $start = Carbon::parse($data['scheduled_at']);
+        $duration = $consultationRequest->service?->duration_minutes ?? 30;
+        $overlap = Appointment::query()
+            ->where('lawyer_profile_id', $consultationRequest->lawyer_profile_id)
+            ->where('status', AppointmentStatus::Scheduled)
+            ->where('scheduled_at', '<', $start->copy()->addMinutes($duration))
+            ->whereRaw('(scheduled_at + (duration_minutes * interval \'1 minute\')) > ?', [$start])
+            ->exists();
+
+        if ($overlap) {
+            throw ValidationException::withMessages([
+                'scheduled_at' => 'این زمان با نوبت دیگری تداخل دارد.',
+            ]);
+        }
 
         DB::transaction(function () use ($consultationRequest, $data) {
             // Guard against double-accept races.
@@ -180,6 +204,12 @@ class RequestIndex extends Component
 
     public function reject(int $id): void
     {
+        if (! Auth::user()->lawyerProfile->isActive()) {
+            session()->flash('error', 'حساب شما فعال نیست.');
+
+            return;
+        }
+
         $this->validateOnly('rejection_reason');
 
         $consultationRequest = ConsultationRequest::query()

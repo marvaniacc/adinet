@@ -19,6 +19,7 @@ use App\Livewire\Dashboard\Admin\PaymentIndex;
 use App\Livewire\Dashboard\Admin\ReportIndex;
 use App\Livewire\Dashboard\Admin\RequestOversight;
 use App\Livewire\Dashboard\Admin\ReviewModeration;
+use App\Livewire\Dashboard\Admin\SettingsManager;
 use App\Livewire\Dashboard\Admin\SpecialtyManager;
 use App\Livewire\Dashboard\Lawyer\AppointmentIndex as LawyerAppointmentIndex;
 use App\Livewire\Dashboard\Lawyer\AvailabilityIndex;
@@ -110,6 +111,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/clients', ClientsIndex::class)->name('clients.index');
         Route::get('/consultation-requests', RequestOversight::class)->name('requests.index');
         Route::get('/appointments', AppointmentOversight::class)->name('appointments.index');
+        Route::get('/settings', SettingsManager::class)->name('settings');
         Route::get('/payments', PaymentIndex::class)->name('payments');
         Route::get('/reports', ReportIndex::class)->name('reports.index');
         Route::get('/reports/{report}/download', [ReportDownloadController::class, 'download'])

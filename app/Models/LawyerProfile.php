@@ -98,6 +98,12 @@ class LawyerProfile extends Model
         return $this->status === LawyerStatus::Verified;
     }
 
+    /** Verified AND not suspended - gates all workflow write-actions. */
+    public function isActive(): bool
+    {
+        return $this->status === LawyerStatus::Verified;
+    }
+
     public function canSubmitForReview(): bool
     {
         return in_array($this->status, [LawyerStatus::Draft, LawyerStatus::Rejected], true);

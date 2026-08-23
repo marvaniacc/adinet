@@ -25,6 +25,12 @@ class AppointmentIndex extends Component
 
         $this->authorize('manage', $appointment);
 
+        if (! Auth::user()->lawyerProfile->isActive()) {
+            session()->flash('error', 'حساب شما فعال نیست.');
+
+            return;
+        }
+
         $newStatus = AppointmentStatus::tryFrom($status);
 
         if ($newStatus === null || $newStatus === AppointmentStatus::Scheduled) {

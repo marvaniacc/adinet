@@ -11,7 +11,11 @@
     </div>
 
     {{-- Filters --}}
-    <div class="mt-6 grid gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-6 grid gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
+        <label class="block lg:col-span-1">
+            <span class="mb-1.5 block text-xs font-medium text-gray-500">جستجو</span>
+            <input type="text" class="input" wire:model.live.debounce.400ms="search" placeholder="نام وکیل یا تخصص…">
+        </label>
         <label class="block">
             <span class="mb-1.5 block text-xs font-medium text-gray-500">شهر</span>
             <select class="input" wire:model.live="city">

@@ -29,7 +29,13 @@
         @endforelse
     </div>
 
+    @php($canWrite = auth()->user()->can('sendMessage', $conversation))
     {{-- Compose --}}
+    @if (! $canWrite)
+        <div class="mt-4 rounded-xl border border-dashed border-gray-300 bg-white p-4 text-center text-sm text-gray-400">
+            این گفتگو بسته شده است و امکان ارسال پیام جدید وجود ندارد.
+        </div>
+    @else
     <form wire:submit="send" class="mt-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
         @error('body') <p class="mb-2 text-sm text-red-600">{{ $message }}</p> @enderror
         @error('file') <p class="mb-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -51,6 +57,7 @@
         </div>
         <div wire:loading wire:target="file" class="mt-2 text-xs text-gray-400">در حال بارگذاری فایل...</div>
     </form>
+    @endif
 
     {{-- Documents --}}
     <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm pb-8">
