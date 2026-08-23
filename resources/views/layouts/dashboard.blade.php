@@ -11,6 +11,7 @@
             ['label' => 'نوبت‌ها', 'icon' => 'event', 'href' => '#'],
             ['label' => 'نظرات', 'icon' => 'reviews', 'href' => route('admin.reviews')],
             ['label' => 'پرداخت‌ها', 'icon' => 'payments', 'href' => route('admin.payments')],
+            ['label' => 'گزارشات', 'icon' => 'summarize', 'href' => route('admin.reports.index')],
             ['label' => 'تخصص‌ها', 'icon' => 'category', 'href' => route('admin.specialties')],
             ['label' => 'شهرها', 'icon' => 'location_city', 'href' => route('admin.cities')],
         ],

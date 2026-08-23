@@ -3,6 +3,7 @@
 use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\LawyerPageController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportDownloadController;
 use App\Livewire\Auth\OtpLogin;
 use App\Livewire\Client\AppointmentIndex;
 use App\Livewire\Client\RequestCreate;
@@ -12,6 +13,7 @@ use App\Livewire\Client\ReviewIndex as ClientReviewIndex;
 use App\Livewire\Dashboard\Admin\CityManager;
 use App\Livewire\Dashboard\Admin\LawyerVerification;
 use App\Livewire\Dashboard\Admin\PaymentIndex;
+use App\Livewire\Dashboard\Admin\ReportIndex;
 use App\Livewire\Dashboard\Admin\ReviewModeration;
 use App\Livewire\Dashboard\Admin\SpecialtyManager;
 use App\Livewire\Dashboard\Lawyer\AppointmentIndex as LawyerAppointmentIndex;
@@ -98,6 +100,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/cities', CityManager::class)->name('cities');
         Route::get('/reviews', ReviewModeration::class)->name('reviews');
         Route::get('/payments', PaymentIndex::class)->name('payments');
+        Route::get('/reports', ReportIndex::class)->name('reports.index');
+        Route::get('/reports/{report}/download', [ReportDownloadController::class, 'download'])
+            ->name('reports.download');
     });
 
     Route::post('/logout', function () {

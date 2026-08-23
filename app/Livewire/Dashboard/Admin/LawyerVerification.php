@@ -135,7 +135,6 @@ class LawyerVerification extends Component
             'profiles' => $profiles,
             'counts' => $counts,
             'statuses' => LawyerStatus::cases(),
-            'currentStatus' => $status,
             // Distinct name: $status is the public string property.
             'currentStatus' => $status,
         ]);
