@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Admin;
 
 use App\Enums\ReviewStatus;
+use App\Models\AdminAction;
 use App\Models\Review;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -39,6 +40,8 @@ class ReviewModeration extends Component
         }
 
         $review->forceFill(['status' => $newStatus])->save();
+
+        AdminAction::record(auth()->user(), "review.{$decision}", $review);
 
         session()->flash('status', 'نظر '.$newStatus->label().' شد.');
     }

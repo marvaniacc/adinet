@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Admin;
 
 use App\Enums\LawyerStatus;
+use App\Models\AdminAction;
 use App\Models\LawyerProfile;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -39,6 +40,7 @@ class LawyersIndex extends Component
         }
 
         $profile->forceFill(['status' => LawyerStatus::Suspended])->save();
+        AdminAction::record(auth()->user(), 'lawyer.suspend', $profile);
         session()->flash('status', "پروفایل {$profile->display_name} معلق شد.");
     }
 
@@ -51,6 +53,7 @@ class LawyersIndex extends Component
         }
 
         $profile->forceFill(['status' => LawyerStatus::Verified, 'verified_at' => now()])->save();
+        AdminAction::record(auth()->user(), 'lawyer.reinstate', $profile);
         session()->flash('status', "پروفایل {$profile->display_name} فعال شد.");
     }
 

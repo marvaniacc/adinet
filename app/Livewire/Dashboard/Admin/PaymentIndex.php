@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Admin;
 
 use App\Enums\PaymentStatus;
+use App\Models\AdminAction;
 use App\Models\Payment;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +25,8 @@ class PaymentIndex extends Component
         }
 
         $payment->forceFill(['status' => PaymentStatus::Refunded])->save();
+
+        AdminAction::record(auth()->user(), 'payment.refund', $payment);
 
         session()->flash('status', 'بازگشت وجه ثبت شد.');
     }

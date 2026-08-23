@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Admin;
 
 use App\Enums\LawyerStatus;
+use App\Models\AdminAction;
 use App\Models\LawyerProfile;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -60,6 +61,8 @@ class LawyerVerification extends Component
             'rejection_reason' => null,
         ])->save();
 
+        AdminAction::record(auth()->user(), 'lawyer.verify', $profile);
+
         session()->flash('status', "پروفایل {$profile->display_name} تأیید شد.");
     }
 
@@ -78,6 +81,8 @@ class LawyerVerification extends Component
             'rejection_reason' => $data['rejection_reason'],
         ])->save();
 
+        AdminAction::record(auth()->user(), 'lawyer.reject', $profile, ['reason' => $data['rejection_reason']]);
+
         $this->cancelReject();
         session()->flash('status', "پروفایل {$profile->display_name} رد شد.");
     }
@@ -92,6 +97,8 @@ class LawyerVerification extends Component
         }
 
         $profile->forceFill(['status' => LawyerStatus::Suspended])->save();
+
+        AdminAction::record(auth()->user(), 'lawyer.suspend', $profile);
 
         session()->flash('status', "پروفایل {$profile->display_name} معلق شد.");
     }
@@ -109,6 +116,8 @@ class LawyerVerification extends Component
             'status' => LawyerStatus::Verified,
             'verified_at' => now(),
         ])->save();
+
+        AdminAction::record(auth()->user(), 'lawyer.reinstate', $profile);
 
         session()->flash('status', "پروفایل {$profile->display_name} مجدداً فعال شد.");
     }

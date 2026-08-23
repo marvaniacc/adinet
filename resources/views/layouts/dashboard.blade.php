@@ -19,6 +19,7 @@
             ['label' => 'تخصص‌ها', 'icon' => 'category', 'svg' => 'specialty', 'href' => route('admin.specialties'), 'active' => request()->routeIs('admin.specialties')],
             ['label' => 'شهرها', 'icon' => 'location_city', 'svg' => 'city', 'href' => route('admin.cities'), 'active' => request()->routeIs('admin.cities')],
             ['label' => 'تنظیمات', 'icon' => 'tune', 'svg' => 'settings', 'href' => route('admin.settings'), 'active' => request()->routeIs('admin.settings')],
+            ['label' => 'فعالیت‌ها', 'icon' => 'history', 'svg' => 'activity', 'href' => route('admin.activity'), 'active' => request()->routeIs('admin.activity')],
         ],
         $user->isLawyer() => [
             ['label' => 'پنل وکیل', 'icon' => 'dashboard', 'svg' => 'dashboard', 'href' => route('dashboard.lawyer.index'), 'active' => request()->routeIs('dashboard.lawyer.index')],

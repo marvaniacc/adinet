@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboard\Admin;
 
+use App\Models\AdminAction;
 use App\Models\Setting;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -42,6 +43,8 @@ class SettingsManager extends Component
 
         Setting::put('request_expiry_days', $data['request_expiry_days']);
         Setting::put('support_mobile', $data['support_mobile'] ?: '');
+
+        AdminAction::record(auth()->user(), 'settings.save', null, $data);
 
         session()->flash('status', 'تنظیمات ذخیره شد.');
     }

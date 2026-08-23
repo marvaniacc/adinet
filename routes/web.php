@@ -10,6 +10,7 @@ use App\Livewire\Client\RequestCreate;
 use App\Livewire\Client\RequestIndex;
 use App\Livewire\Client\ReviewCreate as ClientReviewCreate;
 use App\Livewire\Client\ReviewIndex as ClientReviewIndex;
+use App\Livewire\Dashboard\Admin\ActivityLog;
 use App\Livewire\Dashboard\Admin\AppointmentOversight;
 use App\Livewire\Dashboard\Admin\CityManager;
 use App\Livewire\Dashboard\Admin\ClientsIndex;
@@ -112,6 +113,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/consultation-requests', RequestOversight::class)->name('requests.index');
         Route::get('/appointments', AppointmentOversight::class)->name('appointments.index');
         Route::get('/settings', SettingsManager::class)->name('settings');
+        Route::get('/activity', ActivityLog::class)->name('activity');
         Route::get('/payments', PaymentIndex::class)->name('payments');
         Route::get('/reports', ReportIndex::class)->name('reports.index');
         Route::get('/reports/{report}/download', [ReportDownloadController::class, 'download'])
