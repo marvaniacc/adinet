@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class, 'client_id');
     }
 
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
     public function isClient(): bool
     {
         return $this->role === self::ROLE_CLIENT;

@@ -18,6 +18,8 @@
             ['label' => 'گزارشات', 'icon' => 'summarize', 'svg' => 'report', 'href' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*')],
             ['label' => 'تخصص‌ها', 'icon' => 'category', 'svg' => 'specialty', 'href' => route('admin.specialties'), 'active' => request()->routeIs('admin.specialties')],
             ['label' => 'شهرها', 'icon' => 'location_city', 'svg' => 'city', 'href' => route('admin.cities'), 'active' => request()->routeIs('admin.cities')],
+            ['label' => 'تیکت‌ها', 'icon' => 'support_agent', 'svg' => 'ticket', 'href' => route('admin.tickets.index'), 'active' => request()->routeIs('admin.tickets.*')],
+            ['label' => 'فعالیت‌ها', 'icon' => 'history', 'svg' => 'activity', 'href' => route('admin.activity'), 'active' => request()->routeIs('admin.activity')],
             ['label' => 'تنظیمات', 'icon' => 'tune', 'svg' => 'settings', 'href' => route('admin.settings'), 'active' => request()->routeIs('admin.settings')],
             ['label' => 'فعالیت‌ها', 'icon' => 'history', 'svg' => 'activity', 'href' => route('admin.activity'), 'active' => request()->routeIs('admin.activity')],
         ],
@@ -27,6 +29,7 @@
             ['label' => 'نوبت‌ها', 'icon' => 'event', 'svg' => 'appointment', 'href' => route('dashboard.lawyer.appointments'), 'active' => request()->routeIs('dashboard.lawyer.appointments')],
             ['label' => 'ساعات کاری', 'icon' => 'schedule', 'svg' => 'availability', 'href' => route('dashboard.lawyer.availability'), 'active' => request()->routeIs('dashboard.lawyer.availability')],
             ['label' => 'پیام‌ها', 'icon' => 'forum', 'svg' => 'message', 'href' => route('dashboard.lawyer.messages.index'), 'active' => request()->routeIs('dashboard.lawyer.messages.*')],
+            ['label' => 'اسناد موکلان', 'icon' => 'folder_open', 'svg' => 'folder', 'href' => route('dashboard.lawyer.documents'), 'active' => request()->routeIs('dashboard.lawyer.documents')],
             ['label' => 'خدمات مشاوره', 'icon' => 'miscellaneous_services', 'svg' => 'service', 'href' => route('dashboard.lawyer.services'), 'active' => request()->routeIs('dashboard.lawyer.services')],
             ['label' => 'پروفایل حرفه‌ای', 'icon' => 'badge', 'svg' => 'profile', 'href' => route('dashboard.lawyer.profile'), 'active' => request()->routeIs('dashboard.lawyer.profile')],
             ['label' => 'نظرات موکلان', 'icon' => 'reviews', 'svg' => 'review', 'href' => route('dashboard.lawyer.reviews'), 'active' => request()->routeIs('dashboard.lawyer.reviews')],
@@ -36,8 +39,10 @@
             ['label' => 'درخواست‌های من', 'icon' => 'description', 'svg' => 'request', 'href' => route('dashboard.requests'), 'active' => request()->routeIs('dashboard.requests')],
             ['label' => 'نوبت‌های من', 'icon' => 'event', 'svg' => 'appointment', 'href' => route('dashboard.appointments'), 'active' => request()->routeIs('dashboard.appointments')],
             ['label' => 'پیام‌ها', 'icon' => 'forum', 'svg' => 'message', 'href' => route('messages.index'), 'active' => request()->routeIs('messages.*')],
+            ['label' => 'مدارک من', 'icon' => 'folder_shared', 'svg' => 'folder', 'href' => route('dashboard.documents'), 'active' => request()->routeIs('dashboard.documents')],
             ['label' => 'پروفایل', 'icon' => 'person', 'svg' => 'profile', 'href' => route('dashboard.profile'), 'active' => request()->routeIs('dashboard.profile')],
             ['label' => 'نظرات من', 'icon' => 'reviews', 'svg' => 'review', 'href' => route('reviews.index'), 'active' => request()->routeIs('reviews.index')],
+            ['label' => 'پشتیبانی', 'icon' => 'support_agent', 'svg' => 'support', 'href' => route('tickets.index'), 'active' => request()->routeIs('tickets.*')],
         ],
     };
 

@@ -30,9 +30,12 @@ use App\Livewire\Dashboard\Lawyer\RequestIndex as LawyerRequestIndex;
 use App\Livewire\Dashboard\Lawyer\ReviewIndex as LawyerReviewIndex;
 use App\Livewire\Dashboard\Lawyer\ServiceManager;
 use App\Livewire\Dashboard\Overview;
+use App\Livewire\Documents\Library;
 use App\Livewire\Messages\Chat;
 use App\Livewire\Messages\Index;
 use App\Livewire\Public\LawyerList;
+use App\Livewire\Support\TicketIndex;
+use App\Livewire\Support\TicketView;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +66,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/requests', RequestIndex::class)->name('dashboard.requests');
         Route::get('/dashboard/appointments', AppointmentIndex::class)->name('dashboard.appointments');
         Route::get('/dashboard/profile', App\Livewire\Client\ProfileEdit::class)->name('dashboard.profile');
+        Route::get('/dashboard/documents', Library::class)->name('dashboard.documents');
 
         // NOTE: client review routes exist below; profile nav placeholder stays.
 
@@ -74,6 +78,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/lawyers/{slug}/request', RequestCreate::class)->name('lawyers.request.create');
     });
+
+    // Support tickets (clients & lawyers)
+    Route::get('/support', TicketIndex::class)->name('tickets.index');
+    Route::get('/support/{ticketId}', TicketView::class)->name('tickets.show');
 
     // Private document downloads (policy-checked, streamed; never public URLs)
     Route::get('/documents/{document}/download', [DocumentDownloadController::class, 'download'])
@@ -99,6 +107,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/messages', Index::class)->name('messages.index');
         Route::get('/messages/{conversationId}', Chat::class)->name('messages.show');
         Route::get('/reviews', LawyerReviewIndex::class)->name('reviews');
+        Route::get('/documents', Library::class)->name('documents');
         Route::get('/availability', AvailabilityIndex::class)->name('availability');
     });
 
@@ -116,6 +125,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/activity', ActivityLog::class)->name('activity');
         Route::get('/payments', PaymentIndex::class)->name('payments');
         Route::get('/reports', ReportIndex::class)->name('reports.index');
+        Route::get('/tickets', App\Livewire\Dashboard\Admin\TicketIndex::class)->name('tickets.index');
+        Route::get('/tickets/{ticketId}', App\Livewire\Dashboard\Admin\TicketView::class)->name('tickets.show');
         Route::get('/reports/{report}/download', [ReportDownloadController::class, 'download'])
             ->name('reports.download');
     });
