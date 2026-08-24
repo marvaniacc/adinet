@@ -51,6 +51,35 @@
         App\Models\User::ROLE_LAWYER => 'وکیل',
         default => 'موکل',
     };
+
+    // Notification badges (computed after nav so we know which labels exist)
+    $unreadMsgs = \App\Models\Conversation::query()
+        ->when($user->isLawyer(),
+            fn ($q) => $q->where('lawyer_profile_id', $user->lawyerProfile?->id),
+            fn ($q) => $q->where('client_id', $user->id))
+        ->whereHas('messages', fn ($q) => $q
+            ->where('sender_id', '!=', $user->id)
+            ->whereNull('read_at'))
+        ->count();
+
+    $answeredTkts = \App\Models\Ticket::query()
+        ->where('user_id', $user->id)
+        ->where('status', \App\Enums\TicketStatus::Answered)
+        ->count();
+
+    $openTkts = $user->isAdmin()
+        ? \App\Models\Ticket::query()->where('status', \App\Enums\TicketStatus::Open)->count()
+        : 0;
+
+    foreach ($nav as &$navItem) {
+        $navItem['badge'] = match (true) {
+            str_contains($navItem['label'], 'پیام‌ها') => $unreadMsgs,
+            $navItem['label'] === 'پشتیبانی' => $answeredTkts,
+            $navItem['label'] === 'تیکت‌ها' => $openTkts,
+            default => 0,
+        };
+    }
+    unset($navItem);
 @endphp
 
 <!DOCTYPE html>
@@ -147,6 +176,9 @@
                {!! $item['active'] ? 'aria-current="page"' : '' !!}>
                 <x-svg-icon name="{{ $item['svg'] }}" fallback="{{ $item['icon'] }}" class="h-5 w-5 flex-none"/>
                 <span :class="railOpen ? '' : 'md:hidden'">{{ $item['label'] }}</span>
+                @if (($item['badge'] ?? 0) > 0)
+                    <span class="inline-flex min-w-[18px] flex-none items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold leading-4 text-white">{{ \App\Support\PersianDate::digits($item['badge']) }}</span>
+                @endif
             </a>
         @endforeach
     </nav>
