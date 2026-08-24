@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Process;
 
 class BackupDatabase extends Command
 {
-    protected $signature = 'adinet:backup {--keep=7 : Number of backup files to retain}';
+    protected $signature = 'adinet:backup {--keep=7 : Number of backup file pairs to retain}';
 
     protected $description = 'Dump the PostgreSQL database and private storage to a timestamped backup directory';
 
@@ -21,24 +21,30 @@ class BackupDatabase extends Command
             mkdir($backupDir, 0750, true);
         }
 
-        // 1) Database dump
-        $dumpFile = "{$backupDir}/db-{$timestamp}.sql.gz";
-        $env = array_merge($_ENV, $_SERVER, [
-            'PGPASSWORD' => $db['password'] ?? '',
-        ]);
+        // 1) Database dump — run as postgres system user (peer auth),
+        //    dump to /tmp first then move to backups dir.
+        $dumpFile = "{$backupDir}/db-{$timestamp}.sql";
+        $tmpDump = sys_get_temp_dir().'/'.basename($dumpFile);
+        $dbName = escapeshellarg($db['database'] ?? 'adinet');
 
-        $process = Process::run(array_filter([
-            'pg_dump',
-            '-h', $db['host'] ?? '127.0.0.1',
-            '-p', (string) ($db['port'] ?? 5432),
-            '-U', $db['username'] ?? 'postgres',
-            '-Fc',
-            '-f', $dumpFile,
-            $db['database'] ?? 'adinet',
-        ]), fn () => $env);
+        shell_exec('sudo -u postgres pg_dump -Fc -f '.escapeshellarg($tmpDump)." {$dbName} 2>&1");
 
-        if ($process->failed()) {
-            $this->error('DB dump failed: '.$process->errorOutput());
+        if (file_exists($tmpDump)) {
+            rename($tmpDump, $dumpFile);
+        }
+
+        if (! file_exists($dumpFile) || filesize($dumpFile) === 0) {
+            $this->error('DB dump failed: '.($result ?: 'empty file'));
+
+            return self::FAILURE;
+        }
+
+        // Compress the dump
+        Process::run(['gzip', $dumpFile]);
+        $dumpFile .= '.gz';
+
+        if (! file_exists($dumpFile)) {
+            $this->error('Dump file not found after gzip.');
 
             return self::FAILURE;
         }
@@ -48,10 +54,10 @@ class BackupDatabase extends Command
         $tarFile = "{$backupDir}/private-{$timestamp}.tar.gz";
 
         if (is_dir($storageDir)) {
-            Process::run(['tar', '-czf', $tarFile, '-C', dirname($storageDir), basename($storageDir)]);
+            shell_exec('tar -czf '.escapeshellarg($tarFile).' -C '.escapeshellarg(dirname($storageDir)).' '.escapeshellarg(basename($storageDir)));
         }
 
-        // 3) Prune old backups
+        // 3) Prune old backups (keep N most-recent pairs)
         $keep = max(1, (int) $this->option('keep'));
         $files = array_merge(
             glob("{$backupDir}/db-*.sql.gz") ?: [],
@@ -64,7 +70,8 @@ class BackupDatabase extends Command
             unlink($old);
         }
 
-        $this->info('Backup completed: '.count(glob("{$backupDir}/*")).' files in '.$backupDir);
+        $size = number_format(filesize($dumpFile) / 1024).' KB';
+        $this->info("Backup completed: {$dumpFile} ({$size})");
 
         return self::SUCCESS;
     }
